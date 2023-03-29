@@ -5,9 +5,51 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tree
-{   
+namespace Tree {
+    static class Input_Key
+    {
+        static public string Input_KeyRead()
+        {
+            string s = "";
+            while (true)
+            {
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                    if (keyInfo.Key == ConsoleKey.Escape)
+                    {   
+                        T_Loop.shutdown();
+                        break; // ESC 키를 누르면 반복문을 종료합니다.그리고 시스템을 종료합니다.
+                    }
+                    else if (keyInfo.Key==ConsoleKey.Enter)
+                    {
+                        break;//Enter 키를 누르면 반복문을 종료합니다.
+                    }else if (keyInfo.Key==ConsoleKey.Backspace)
+                    {
+                        if(s.Length>0)
+                        {
+                            s= s.Substring(0, s.Length - 1);
+                            
+                            Console.Write("\b \b");
+                        }
+                        
+                    }
+                    else
+                    {
+                        s+=keyInfo.KeyChar;
+                        Console.Write(keyInfo.KeyChar);
 
+                    }
+                }
+
+            }
+            Console.WriteLine();
+            return s;
+        }
+
+
+        
+    }
      class Tree
     {
         node_child[] num =new node_child[2];//자식 배열
@@ -32,15 +74,18 @@ namespace Tree
         internal void input()
         {
             s = null;
-            while (string.IsNullOrEmpty(s))
+            while (string.IsNullOrEmpty(s)&&T_Loop.start==true)
             {
                 Console.WriteLine("입력하세요.");
-                s = Console.ReadLine();
+                s = Input_Key.Input_KeyRead();
             }
-            Console.WriteLine(s+"가 입력되었습니다.");
+            if (T_Loop.start==true)
+            {
+                Console.WriteLine(s+"가 입력되었습니다.");
+            }
         }
         internal void output()
-        { if(string.IsNullOrEmpty(s))
+        { if(string.IsNullOrEmpty(s)&&T_Loop.start==true)
             {
                 Console.WriteLine ("저장된 값이 없습니다.");
             }
@@ -54,10 +99,10 @@ namespace Tree
         internal Tree child_search()
         {
             str = null;
-            while (string.IsNullOrEmpty(str))
+            while (string.IsNullOrEmpty(str)&&T_Loop.start==true)
             {
                 Console.WriteLine("0번과 1번 중 볼 자식을 선택해주세요");
-                str = Console.ReadLine();
+                str = Input_Key.Input_KeyRead();
             }
             if (!(num[0] == null))// 
             {
@@ -105,17 +150,16 @@ namespace Tree
     }
 
 
-    class T_Loop
-    {
-        bool start = false;
-        Tree tree;
-        string s;
-        public T_Loop() { start = true; }
+       static class T_Loop
+    {   static public bool start = false;
+        static Tree tree;
+        static string s;
+        
 
-        void init() { tree = new Tree(); }
-        void input() {
+        static void init() { tree = new Tree(); start=true; }
+        static void input() {
             s = null;
-            while (string.IsNullOrEmpty(s))
+            while (string.IsNullOrEmpty(s)&&T_Loop.start==true)
             {
                 Console.WriteLine("===============================================");
                 Console.WriteLine("1을 입력하면 해당 노드에 값을 입력합니다.");
@@ -123,14 +167,15 @@ namespace Tree
                 Console.WriteLine("3을 입력하면 해당 노드에 입력값을 확인합니다.");
                 Console.WriteLine("4을 입력하면 해당 노드의 자식으로 이동합니다.");
                 Console.WriteLine("5을 입력하면 해당 노드의 부모로 이동합니다.");
+                Console.WriteLine("6을 입력하면 종료합니다.");
                 Console.WriteLine("===============================================");
-                s = Console.ReadLine();
+                s = Input_Key.Input_KeyRead();
             }
 
             
             
              }
-        void Update() {
+        static void Update() {
             switch (s)
             {
                 case "1": tree.input();break;
@@ -138,26 +183,34 @@ namespace Tree
                 case "3": tree.output();break;
                 case "4": tree=tree.child_search(); break; 
                 case "5": tree=tree.parnet_search(); break;
+                case "6": start = false; break;
                 default: Console.WriteLine("오류"); break;
             }
         
         }
-        void Render() { }
+        static  void Render() { }
 
 
-        public void Start()
+        static public void Start()
         {
 
             init();
             while (start)
             {
-                input();
-                Update();
-                Render();
+                input();  if(!start){ break; }
+                Update(); if (!start) { break; }
+                Render(); if (!start) { break; }
             }
 
         }
+        static public void shutdown()
+        {
+            Console.WriteLine();
+            start = false;
+            Console.WriteLine("종료합니다.");
+        }
 
     }
-
+    
+   
 }
