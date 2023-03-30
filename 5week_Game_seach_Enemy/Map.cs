@@ -11,7 +11,7 @@ namespace _5week_Game_seach_Enemy
 {
     
     internal class Map
-    {   //플레이어 위치 적 위치  적 갯수
+    {   //플레이어 위치 적 위치  적 갯수 
 
         private int Rocknum;// 돌의 개수;
         public int rocknum { get { return Rocknum; } set { Rocknum = value; } }
@@ -56,12 +56,16 @@ namespace _5week_Game_seach_Enemy
         }
         void Map_out(int size)
         {
-            int Test = size * 4;
-          for(int i = 0;i < size*size;i++)
+            
+            for (int i = 0; i < size; i++)
             {
-
-
-
+                Console.Write("┏");
+                Console.Write("  ");
+                for (int j = 0; j < size; j++)
+                {
+                    Console.Write("□");
+                }
+                Console.WriteLine();
             }
 
         }

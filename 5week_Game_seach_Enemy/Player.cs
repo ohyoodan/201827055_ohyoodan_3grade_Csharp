@@ -8,22 +8,29 @@ namespace _5week_Game_seach_Enemy
 {
     internal class Player
     {
-        // 이동량
-        // 자신의 위치
+        int movePoint;// 이동량
 
+        Pos Playerpos= new Pos();// 내 위치
 
-
+                
     }
 
 
     class Enemy: Player
     {
         //플레이어의 위치
+        
         // 가는 경로
 
 
     }
 
+    struct Pos
+    {
+       private int X, Y;
 
+        public int x { get { return X; } set { X = value; } }
+        public int y { get { return Y; } set { Y = value; } }
+    }
 
 }
