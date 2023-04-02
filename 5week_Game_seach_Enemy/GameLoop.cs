@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace _5week_Game_seach_Enemy
 {
-        static class GameLoop
+         class GameLoop
         {
-        static private bool isRunning;
-        
+        static private bool isRunning=false;
+        Map map = new Map();
 
-        static public void Start()
+         public void Start()
             {
                 // 게임 루프가 이미 실행 중인 경우
                 if (isRunning)
@@ -22,7 +22,9 @@ namespace _5week_Game_seach_Enemy
 
                 isRunning = true;
 
-                // 게임 루프를 실행할 스레드 생성
+            // 게임 루프를 실행할 스레드 생성
+            Thread thread=new Thread(GameLoop_Run);
+            thread.Start();
 
             }
 
@@ -31,7 +33,7 @@ namespace _5week_Game_seach_Enemy
                 isRunning = false;
             }
 
-        static private void GameLoop_Run()
+         private void GameLoop_Run()
             {
 
                 Init();
@@ -40,31 +42,40 @@ namespace _5week_Game_seach_Enemy
                 // 게임 루프 코드 작성
                 input();
                 Update();
-                Render();
-                
+                Render();                
                 }
             }
 
 
-        static void input()
+         void input()
         {
-
+            Console.ForegroundColor = ConsoleColor.Green;//색상
+            Console.WriteLine("input....");
+            Console.ResetColor();
+            Thread.Sleep(2000);
         }
-        static void Render()
+         void Render()
         {
-
+            map.Map_out();                  
         }
-        static void Update()
+         void Update()
         {
-
+            Console.ForegroundColor = ConsoleColor.Green;//색상
+            Console.WriteLine("Update");
+            Console.ResetColor();
         }
 
-        static void Init()
+         void Init()
+        {map.MapCreat();
+           
+        }
+
+        void shutdown()
         {
 
         }
 
     }
    
-
+    
 }

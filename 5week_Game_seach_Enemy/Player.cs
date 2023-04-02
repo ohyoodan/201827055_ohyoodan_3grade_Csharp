@@ -12,17 +12,17 @@ namespace _5week_Game_seach_Enemy
 
         Pos Playerpos= new Pos();// 내 위치
 
-                
+        // ●
     }
 
 
     class Enemy: Player
     {
         //플레이어의 위치
-        
+
         // 가는 경로
 
-
+        //★
     }
 
     struct Pos
