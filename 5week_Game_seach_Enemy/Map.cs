@@ -17,7 +17,9 @@ namespace _5week_Game_seach_Enemy
         public int rocknum { get { return Rocknum; } set { Rocknum = value; } }
 
         private int rockcount = 0;
-        
+
+        int PlayerPos = 5;
+        int EnemyPos;
 
 
         private int Mapsize_row;// 맵의 행->
@@ -28,7 +30,7 @@ namespace _5week_Game_seach_Enemy
         Random randomsize = new Random();// 맵 사이즈 랜덤 3*3 4*4 5*5 6*6 7*7 8*8 9*9 10*10
 
 
-       private IMapTile[]? Map_S;// 자료 구조
+       private IMapTile[] Map_S;// 자료 구조
 
        public Map()
         {   int Col= randomsize.Next(3, 11);//3~10 이상~미만
@@ -60,26 +62,56 @@ namespace _5week_Game_seach_Enemy
                 Map_S[i].index = i;
                 Map_S[i].x = row;
                 Map_S[i].y =col;
-            }
+            }            
 
         }
+
+        public void PosSet()
+        {
+            PlayerPos=randomsize.Next(0, Mapsize_col*Mapsize_row);
+            EnemyPos=randomsize.Next(0, Mapsize_col*Mapsize_row);
+            if (PlayerPos==EnemyPos)
+            {
+                PosSet();
+            }
+        }
+
         public void Map_out()
         {
             
-            for (int i = 0; i < Mapsize_row; i++)
+            for (int row = 0; row < Mapsize_row; row++)
             {
                 
-                for (int j = 0; j < Mapsize_col; j++)
-                {
-                    if (j==0)
-                    {
-                        Console.Write("                                                 ");
-                    }
-                    Map_S[i].Out();//배열에 맞는 순으로 꺼내기
-                }
-                Console.WriteLine();
-            }
 
+                for(int col =0; col < Mapsize_col; col++)
+                {
+                    int index = row* Mapsize_col+col;
+                    if (col==0)
+                    {
+                        Console.Write("\t\t\t\t\t\t");
+                    }
+                    if (Map_S[index].index==PlayerPos)
+                    {
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Yellow");
+                        Map_S[index].PlayerOut();
+                        Map_S[index].ColorReset();
+                    }
+                    else
+                    {
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Green");
+                        Map_S[index].Out();//배열에 맞는 순으로 꺼내기
+                        Map_S[index].ColorReset();
+                    }
+                    
+
+                }
+
+                Console.WriteLine();
+
+            }
+            
         }
         
     }
@@ -87,6 +119,7 @@ namespace _5week_Game_seach_Enemy
 
     class block : IMapTile
     {
+        
         private int Index;// 넘버
         private int X, Y;// 자신의 위치
         public int index { get { return Index; } set {  Index = value; } }
@@ -95,22 +128,51 @@ namespace _5week_Game_seach_Enemy
         
         public virtual void Out()
         {
-            Console.ForegroundColor = ConsoleColor.Green;//색상
+            
             
             Console.Write("□");
 
-            Console.ResetColor();// 리셋
+            // 리셋
+        }
+        public virtual void PlayerOut()
+        {
+
+            Console.Write("■");
+
         }
 
-        string Outputxy()
+       public virtual string Outputxy()
         {
             return "현재 좌표는 X:"+x+" Y:"+y+"입니다";
         }
 
-        public void ChangeColor()
+        public void ChangeColor(string s)
         {
-
+            switch (s)
+            {
+                case "Green":
+                    Console.ForegroundColor = ConsoleColor.Green;//색상
+                    break;
+                case "Red":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case "Yellow":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "Cyan":
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+                default:
+                    break;
+            }
+            
         }
+
+        public void ColorReset()
+        {
+            Console.ResetColor();
+        }
+
     }
     
 
@@ -121,5 +183,6 @@ namespace _5week_Game_seach_Enemy
             Console.Write("◆");
             Console.ResetColor();
         }
+        
     }
 }

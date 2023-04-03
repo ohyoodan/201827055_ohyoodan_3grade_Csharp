@@ -12,10 +12,14 @@ namespace _5week_Game_seach_Enemy
         int x { get; set; }
         int y { get; set; }
 
-
-        void ChangeColor();
-        void Out();
         
+
+        void ChangeColor(string s);
+        void Out();
+        void ColorReset();
+        void PlayerOut();
+
+        string Outputxy();
 
     }
 }

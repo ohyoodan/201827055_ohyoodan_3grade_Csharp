@@ -10,7 +10,7 @@ namespace _5week_Game_seach_Enemy
     {
         int movePoint;// 이동량
 
-        Pos Playerpos= new Pos();// 내 위치
+        
 
         // ●
     }
@@ -24,13 +24,5 @@ namespace _5week_Game_seach_Enemy
 
         //★
     }
-
-    struct Pos
-    {
-       private int X, Y;
-
-        public int x { get { return X; } set { X = value; } }
-        public int y { get { return Y; } set { Y = value; } }
-    }
-
+    
 }
