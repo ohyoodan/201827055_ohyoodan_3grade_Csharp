@@ -9,4 +9,3 @@ gameLoop.Start();
 
 
 
-Console.WriteLine("종료되었습니다.");
