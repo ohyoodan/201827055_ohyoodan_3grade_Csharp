@@ -18,7 +18,7 @@ namespace _5week_Game_seach_Enemy
 
         private int rockcount = 0;
 
-        int PlayerPos = 5;
+        int PlayerPos;
         int EnemyPos;
 
 
@@ -127,18 +127,12 @@ namespace _5week_Game_seach_Enemy
         public int y { get { return Y; } set { Y = value; } }
         
         public virtual void Out()
-        {
-            
-            
-            Console.Write("□");
-
-            // 리셋
+        {                        
+            Console.Write("□");            
         }
         public virtual void PlayerOut()
         {
-
             Console.Write("■");
-
         }
 
        public virtual string Outputxy()
@@ -182,7 +176,8 @@ namespace _5week_Game_seach_Enemy
         {   Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("◆");
             Console.ResetColor();
-        }
-        
+        }        
     }
+
+    
 }

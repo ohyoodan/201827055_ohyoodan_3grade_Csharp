@@ -40,10 +40,10 @@ namespace _5week_Game_seach_Enemy
                 while (isRunning)
                 {
                 // 게임 루프 코드 작성
-                input();
-                Update();
-                Render();                
-                }
+                input();  if (!isRunning) { break; }
+                Update(); if (!isRunning) { break; }
+                Render(); if (!isRunning) { break; }
+            }
             }
 
 
@@ -52,6 +52,7 @@ namespace _5week_Game_seach_Enemy
             Console.ForegroundColor = ConsoleColor.Green;//색상
             Console.WriteLine("input....");
             Console.ResetColor();
+            
             Thread.Sleep(2000);
         }
          void Render()
@@ -66,13 +67,13 @@ namespace _5week_Game_seach_Enemy
         }
 
          void Init()
-        {map.MapCreat();
-           
+        {   map.MapCreat();
+            map.PosSet();
         }
 
         void shutdown()
         {
-
+            isRunning =false;
         }
 
     }
