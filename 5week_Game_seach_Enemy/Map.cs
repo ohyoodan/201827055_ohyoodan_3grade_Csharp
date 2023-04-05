@@ -20,8 +20,9 @@ namespace _5week_Game_seach_Enemy
 
         Random randomsize = new Random();// 맵 사이즈 랜덤 3*3 4*4 5*5 6*6 7*7 8*8 9*9 10*10
 
-       private IMapTile[] Map_S;// 자료 구조
-
+       private block[] Map_S;// 자료 구조
+       int[] vis_chack=new int[4];
+        bool Red=false;
        
 
         public void MapsizeOut()
@@ -31,25 +32,28 @@ namespace _5week_Game_seach_Enemy
 
         public void MapCreat()
         {
-            Map_S=new IMapTile[GameManager.mapsize_row*GameManager.mapsize_col];
+            Map_S=new block[GameManager.mapsize_row*GameManager.mapsize_col];
 
             for (int i = 0; i < GameManager.mapsize_col * GameManager.mapsize_row; i++)
             {
                 int row = i/ GameManager.mapsize_col;
                 int col = i% GameManager.mapsize_col;
 
-                Map_S[i] = new block();// if문을 이용해 돌과 판별 랜덤으로 뿌릴 것
+                Map_S[i] = new block();
                 Map_S[i].index = i;
                 Map_S[i].x = row;
                 Map_S[i].y =col;
             }            
 
         }
-
+        public void Seach(ref int[] vis)
+        {
+            vis_chack= vis;
+        }
         
 
         public void Map_out()
-        {
+        { 
             
             for (int row = 0; row < GameManager.mapsize_row; row++)
             {
@@ -58,18 +62,36 @@ namespace _5week_Game_seach_Enemy
                 for(int col =0; col < GameManager.mapsize_col; col++)
                 {
                     int index = row* GameManager.mapsize_col + col;
+                    if (GameManager.Input=="1")
+                    {if(index==vis_chack[index])
+                        Red=true;
+                    }
                     if (col==0)
                     {
                         Console.Write("\t\t\t\t\t\t");
                     }
-                    if (Map_S[index].index== GameManager.playerPos)
+                    if (Map_S[index].index== GameManager.playerPos)//플레이어 표시
                     {
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Yellow");
                         Map_S[index].PlayerOut();
                         Map_S[index].ColorReset();
                     }
-                    else
+                    else if (Map_S[index].index== GameManager.enemyPos)
+                    {
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Red");
+                        Map_S[index].EnemyOut();
+                        Map_S[index].ColorReset();
+                    }
+                    else if (Red&&GameManager.Input=="1")
+                    {
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Red");
+                        Map_S[index].Out();//배열에 맞는 순으로 꺼내기
+                        Map_S[index].ColorReset();Red = false;
+                    }
+                    else// 아무 것 도 없는 칸
                     {
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Green");
@@ -89,7 +111,7 @@ namespace _5week_Game_seach_Enemy
     }
 
 
-    class block : IMapTile
+    class block 
     {
         
         private int Index;// 넘버
@@ -98,16 +120,20 @@ namespace _5week_Game_seach_Enemy
         public int x { get { return X; } set {  X = value; } }
         public int y { get { return Y; } set { Y = value; } }
         
-        public virtual void Out()
+        public  void Out()
         {                        
             Console.Write("□");            
         }
-        public virtual void PlayerOut()
+        public  void PlayerOut()
         {
-            Console.Write("■");
+            Console.Write("●");
         }
+        public void EnemyOut()
+        {
 
-       public virtual string Outputxy()
+            Console.Write("★");
+        } 
+       public  string Outputxy()
         {
             return "현재 좌표는 X:"+x+" Y:"+y+"입니다";
         }
@@ -141,15 +167,6 @@ namespace _5week_Game_seach_Enemy
 
     }
     
-
-    class rock:block ,IMapTile
-    {
-        public override void Out()
-        {   Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("◆");
-            Console.ResetColor();
-        }        
-    }
-
+    
     
 }

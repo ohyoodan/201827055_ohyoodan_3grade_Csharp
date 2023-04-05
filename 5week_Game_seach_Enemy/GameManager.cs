@@ -19,6 +19,12 @@ namespace _5week_Game_seach_Enemy
         static private int Mapsize_col;// 맵의 열
         static public  int mapsize_col { get { return Mapsize_col; } set { Mapsize_col = value; } }
 
+        static public bool isRunning = false;
+
+        static public string Input;
+
+        
+
 
     }
 }
