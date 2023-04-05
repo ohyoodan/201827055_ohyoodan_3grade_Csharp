@@ -11,8 +11,9 @@ namespace _5week_Game_seach_Enemy
         {
         static private bool isRunning=false;
         Map map = new Map();
-
-         public void Start()
+        MapSetting setting;
+        Input_Key Input_Key = new Input_Key();
+        public void Start()
             {
                 // 게임 루프가 이미 실행 중인 경우
                 if (isRunning)
@@ -51,8 +52,11 @@ namespace _5week_Game_seach_Enemy
         {
             Console.ForegroundColor = ConsoleColor.Green;//색상
             Console.WriteLine("input....");
-            Console.ResetColor();
             
+            Console.ResetColor();
+
+            Input_Key.Input_KeyRead();
+
             Thread.Sleep(2000);
         }
          void Render()
@@ -67,8 +71,15 @@ namespace _5week_Game_seach_Enemy
         }
 
          void Init()
-        {   map.MapCreat();
-            map.PosSet();
+        {   setting = new MapSetting();
+            setting.PosSet();            
+            map.MapCreat();
+        }
+
+        void Init(int row, int col)
+        {   setting= new MapSetting(row,col);
+            setting.PosSet();
+            map.MapCreat();
         }
 
         void shutdown()

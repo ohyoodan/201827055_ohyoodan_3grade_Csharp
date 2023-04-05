@@ -18,45 +18,25 @@ namespace _5week_Game_seach_Enemy
 
         private int rockcount = 0;
 
-        int PlayerPos;
-        int EnemyPos;
-
-
-        private int Mapsize_row;// 맵의 행->
-        internal int mapsize_row { get { return Mapsize_row; } set { Mapsize_row = value; } }
-        private int Mapsize_col;// 맵의 열
-        internal int mapsize_col { get { return Mapsize_col; }set { Mapsize_col = value; } }
-
         Random randomsize = new Random();// 맵 사이즈 랜덤 3*3 4*4 5*5 6*6 7*7 8*8 9*9 10*10
-
 
        private IMapTile[] Map_S;// 자료 구조
 
-       public Map()
-        {   int Col= randomsize.Next(3, 11);//3~10 이상~미만
-            int Row= randomsize.Next(3, 11);
-            mapsize_row =Row;
-            mapsize_col =Col;
-        }
-        Map(int col,int row)
-        {
-            int CoI = col;
-            int Row = row;
-        }        
+       
 
         public void MapsizeOut()
         {
-            Console.WriteLine( "맵의 크기는"+Mapsize_col*Mapsize_row+" 입니다.");
+            Console.WriteLine( "맵의 크기는"+GameManager.mapsize_col*GameManager.mapsize_row+" 입니다.");
         }
 
         public void MapCreat()
         {
-            Map_S=new IMapTile[Mapsize_row*Mapsize_col];
+            Map_S=new IMapTile[GameManager.mapsize_row*GameManager.mapsize_col];
 
-            for (int i = 0; i < Mapsize_col*Mapsize_row; i++)
+            for (int i = 0; i < GameManager.mapsize_col * GameManager.mapsize_row; i++)
             {
-                int row = i/Mapsize_col;
-                int col = i%Mapsize_col;
+                int row = i/ GameManager.mapsize_col;
+                int col = i% GameManager.mapsize_col;
 
                 Map_S[i] = new block();// if문을 이용해 돌과 판별 랜덤으로 뿌릴 것
                 Map_S[i].index = i;
@@ -66,31 +46,23 @@ namespace _5week_Game_seach_Enemy
 
         }
 
-        public void PosSet()
-        {
-            PlayerPos=randomsize.Next(0, Mapsize_col*Mapsize_row);
-            EnemyPos=randomsize.Next(0, Mapsize_col*Mapsize_row);
-            if (PlayerPos==EnemyPos)
-            {
-                PosSet();
-            }
-        }
+        
 
         public void Map_out()
         {
             
-            for (int row = 0; row < Mapsize_row; row++)
+            for (int row = 0; row < GameManager.mapsize_row; row++)
             {
                 
 
-                for(int col =0; col < Mapsize_col; col++)
+                for(int col =0; col < GameManager.mapsize_col; col++)
                 {
-                    int index = row* Mapsize_col+col;
+                    int index = row* GameManager.mapsize_col + col;
                     if (col==0)
                     {
                         Console.Write("\t\t\t\t\t\t");
                     }
-                    if (Map_S[index].index==PlayerPos)
+                    if (Map_S[index].index== GameManager.playerPos)
                     {
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Yellow");
