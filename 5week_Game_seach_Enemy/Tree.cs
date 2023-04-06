@@ -12,14 +12,14 @@ namespace _5week_Game_seach_Enemy
     {
         int[] Tree_= new int[GameManager.mapsize_row*GameManager.mapsize_col];
         
-        int[] visited = new int[2000];//이동한 위치를 저장하는 배열  나중에 게임 루프로 보내 줄 것
-        int visitedIdx = 0;
+        int[] visited = new int[100];//이동한 위치를 저장하는 배열  나중에 게임 루프로 보내 줄 것
+        int visitedIdx  = 0;
 
       public  Tree()
         {
-            for(int i= 0; i < Tree_.Length; i++)
+            for(int i= 0; i < Tree_.Length; i++)//초기화
             {
-                //0: 이동 가능한 빈 칸 , 1: 벽 2: 적 3: 아군
+                //0: 이동 가능한 빈 칸 , 1: 벽 2: 적 3: 아군 4: 돌
 
                 if (i==GameManager.enemyPos)
                 {
@@ -28,7 +28,7 @@ namespace _5week_Game_seach_Enemy
                 {
 
                     Tree_[i]=3;
-                }
+                }//else if()
                 else
                 {
                     Tree_[i]=0;
@@ -45,55 +45,8 @@ namespace _5week_Game_seach_Enemy
         {
             return pos>=0 && pos< GameManager.mapsize_col*GameManager.mapsize_row && Tree_[pos] != 1;
             // 범위 내에 있고 벽이 아니면 이동 가능
-        }
+        }                                        
         
-        // BFS 탐색
-        int[] queue = new int[100];
-        int front = 0, rear = 0;
-
-        void Enqueue(int x)
-        {
-            queue[rear++] = x;
-        }
-
-        int Dequeue()
-        {
-            return queue[front++];
-        }
-
-        bool IsEmpty()
-        {
-            return front == rear;
-        }
-
-        public void BFS(int start)
-        {
-            Enqueue(start);
-
-            while (!IsEmpty())
-            {
-                int pos = Dequeue();
-                visited[visitedIdx++] = pos;
-
-                // 적을 찾은 경우 탐색 중지
-                if (pos ==GameManager.playerPos)
-                    break;
-
-                // 상하좌우 이동
-                int[] dx = { 0, 0, -1, 1 };
-                int[] dy = { -1, 1, 0, 0 };
-                for (int i = 0; i < 4; i++)
-                {
-                    int nextPos = pos + dy[i] * 4 + dx[i];
-                    if (IsMovable(nextPos) && Array.IndexOf(visited, nextPos) == -1) // 이동 가능하고 방문하지 않은 칸인 경우
-                        Enqueue(nextPos);
-                }
-            }
-
-
-        }
-
-
             public int[] Out()
         {
             return visited;
@@ -101,6 +54,22 @@ namespace _5week_Game_seach_Enemy
 
     }
 
+    
+    class Vertex
+    {
+        
+
+
+    }
+    class edge
+    {
+
+
+
+
+    }
+    
+    
         
        
 

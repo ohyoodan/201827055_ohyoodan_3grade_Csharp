@@ -118,7 +118,7 @@ namespace _5week_Game_seach_Enemy
                 if (GameManager.Input=="1")
                 {   
                     Tree=new Tree();
-                    Tree.BFS(GameManager.enemyPos);
+                    //Tree.BFS(GameManager.enemyPos);
                     vis=Tree.Out();
                     map.Seach(ref vis);
                 }                
