@@ -11,6 +11,26 @@ namespace _5week_Game_seach_Enemy
 {
          class GameLoop
         {
+
+        //===================================================================
+        static private int PlayerPos;
+        static public int playerPos { get { return PlayerPos; } set { PlayerPos = value; } }
+
+        static private int EnemyPos;
+        static public int enemyPos { get { return EnemyPos; } set { EnemyPos = value; } }
+
+        static private int Mapsize_row;// 맵의 행->
+        static public int mapsize_row { get { return Mapsize_row; } set { Mapsize_row = value; } }
+        static private int Mapsize_col;// 맵의 열
+        static public int mapsize_col { get { return Mapsize_col; } set { Mapsize_col = value; } }
+
+        static public bool isRunning = false;
+
+        static public string Input;
+        //===================================================================
+
+
+
         Tree Tree;
         Thread thread;
         Map map = new Map();
