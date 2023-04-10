@@ -27,17 +27,17 @@ namespace _5week_Game_seach_Enemy
 
         public void MapsizeOut()
         {
-            Console.WriteLine( "맵의 크기는"+GameManager.mapsize_col*GameManager.mapsize_row+" 입니다.");
+            Console.WriteLine( "맵의 크기는"+GameLoop.mapsize_col*GameLoop.mapsize_row+" 입니다.");
         }
 
         public void MapCreat()
         {
-            Map_S=new block[GameManager.mapsize_row*GameManager.mapsize_col];
+            Map_S=new block[GameLoop.mapsize_row*GameLoop.mapsize_col];
 
-            for (int i = 0; i < GameManager.mapsize_col * GameManager.mapsize_row; i++)
+            for (int i = 0; i < GameLoop.mapsize_col * GameLoop.mapsize_row; i++)
             {
-                int row = i/ GameManager.mapsize_col;
-                int col = i% GameManager.mapsize_col;
+                int row = i/ GameLoop.mapsize_col;
+                int col = i% GameLoop.mapsize_col;
 
                 Map_S[i] = new block();
                 Map_S[i].index = i;
@@ -55,36 +55,37 @@ namespace _5week_Game_seach_Enemy
         public void Map_out()
         { 
             
-            for (int row = 0; row < GameManager.mapsize_row; row++)
+            for (int row = 0; row < GameLoop.mapsize_row; row++)
             {
                 
 
-                for(int col =0; col < GameManager.mapsize_col; col++)
+                for(int col =0; col < GameLoop.mapsize_col; col++)
                 {
-                    int index = row* GameManager.mapsize_col + col;
-                    if (GameManager.Input=="1")
-                    {if(index==vis_chack[index])
+                    int index = row* GameLoop.mapsize_col + col;
+                    
+                    if (GameLoop.Input=="1")
+                    {if(index==vis_chack[index])//경로 표시
                         Red=true;
-                    }
+                     }
                     if (col==0)
                     {
                         Console.Write("\t\t\t\t\t\t");
                     }
-                    if (Map_S[index].index== GameManager.playerPos)//플레이어 표시
+                    if (Map_S[index].index== GameLoop.playerPos)//플레이어 표시
                     {
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Yellow");
                         Map_S[index].PlayerOut();
                         Map_S[index].ColorReset();
                     }
-                    else if (Map_S[index].index== GameManager.enemyPos)
+                    else if (Map_S[index].index== GameLoop.enemyPos)
                     {
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Red");
                         Map_S[index].EnemyOut();
                         Map_S[index].ColorReset();
                     }
-                    else if (Red&&GameManager.Input=="1")
+                    else if (Red&&GameLoop.Input=="1")
                     {
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Red");
@@ -130,7 +131,6 @@ namespace _5week_Game_seach_Enemy
         }
         public void EnemyOut()
         {
-
             Console.Write("★");
         } 
        public  string Outputxy()

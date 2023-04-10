@@ -11,15 +11,13 @@ namespace _5week_Game_seach_Enemy
 {
          class GameLoop
         {
-
+        // 공통 데이터
         //===================================================================
         static private int PlayerPos;
-        static public int playerPos { get { return PlayerPos; } set { PlayerPos = value; } }
-
+        static public int  playerPos { get { return PlayerPos; } set { PlayerPos = value; } }
         static private int EnemyPos;
         static public int enemyPos { get { return EnemyPos; } set { EnemyPos = value; } }
-
-        static private int Mapsize_row;// 맵의 행->
+        static private int Mapsize_row;// 맵의 행
         static public int mapsize_row { get { return Mapsize_row; } set { Mapsize_row = value; } }
         static private int Mapsize_col;// 맵의 열
         static public int mapsize_col { get { return Mapsize_col; } set { Mapsize_col = value; } }
@@ -27,27 +25,35 @@ namespace _5week_Game_seach_Enemy
         static public bool isRunning = false;
 
         static public string Input;
+
+        static public Queue<int> Rock= new Queue<int>();//돌 맹 이
         //===================================================================
 
 
 
         Tree Tree;
         Thread thread;
-        Map map = new Map();
+        Map map = new Map();//Render용 맵
+        
         MapSetting setting;
         Input_Key Input_Key = new Input_Key();
+        private int[] MapData = new int[100]; //실제 맵 데이터
+        
         int[] vis;
         bool startFirst = true;
         string s;
+
+
+
         public void Start()
             {
                 // 게임 루프가 이미 실행 중인 경우
-                if (GameManager.isRunning)
+                if (GameLoop.isRunning)
                 {
                     return;
                 }
 
-            GameManager.isRunning = true;
+            GameLoop.isRunning = true;
 
             // 게임 루프를 실행할 스레드 생성
             thread=new Thread(GameLoop_Run);
@@ -57,19 +63,19 @@ namespace _5week_Game_seach_Enemy
 
         static public void Stop()
             {
-            GameManager.isRunning = false;
+            GameLoop.isRunning = false;
             }
 
          private void GameLoop_Run()
             {
 
                 Init();
-                while (GameManager.isRunning)
+                while (GameLoop.isRunning)
                 {
                 // 게임 루프 코드 작성
-                input();  if (!GameManager.isRunning) { break; }
-                Update(); if (!GameManager.isRunning) { break; }
-                Render(); if (!GameManager.isRunning) { break; }
+                input();  if (!GameLoop.isRunning) { break; }
+                Update(); if (!GameLoop.isRunning) { break; }
+                Render(); if (!GameLoop.isRunning) { break; }
                 }
                 shutdown();
             }
@@ -88,7 +94,7 @@ namespace _5week_Game_seach_Enemy
 
                 Console.ResetColor();
 
-                GameManager.Input=Input_Key.Input_KeyRead();
+                GameLoop.Input=Input_Key.Input_KeyRead();
             }                        
             
         }
@@ -102,7 +108,7 @@ namespace _5week_Game_seach_Enemy
                 map.Map_out();
 
                 Console.WriteLine("====================================================================");
-                if (GameManager.Input==null)
+                if (GameLoop.Input==null)
                 {
                     
                 }
@@ -126,7 +132,7 @@ namespace _5week_Game_seach_Enemy
             }
             else
             {
-                switch (GameManager.Input)
+                switch (GameLoop.Input)
                 {
                     case "1": s="적의 경로를 출력합니다."; break;
                     case "2": s="넘어가기"; break;
@@ -135,10 +141,10 @@ namespace _5week_Game_seach_Enemy
 
                 Console.ForegroundColor = ConsoleColor.Green;//색상
                 Console.WriteLine("Update");
-                if (GameManager.Input=="1")
+                if (GameLoop.Input=="1")
                 {   
                     Tree=new Tree();
-                    //Tree.BFS(GameManager.enemyPos);
+                    //Tree.BFS(GameLoop.enemyPos);
                     vis=Tree.Out();
                     map.Seach(ref vis);
                 }                

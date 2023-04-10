@@ -26,7 +26,7 @@ namespace _5week_Game_seach_Enemy
                     if (keyInfo.Key == ConsoleKey.Escape)
                     {
 
-                        GameManager.isRunning=false;
+                        GameLoop.isRunning=false;
                         break; // ESC 키를 누르면 반복문을 종료합니다.그리고 시스템을 종료합니다.
                     }
                     else if (keyInfo.Key==ConsoleKey.Enter)
