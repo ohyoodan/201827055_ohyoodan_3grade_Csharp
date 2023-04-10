@@ -63,9 +63,6 @@ namespace _5week_Game_seach_Enemy
     class MapSetting
     {
         int[] MapData;
-        int Rock = 0;
-        int[] RockPos;
-
         Random random = new Random();
 
         public void PosSet()
@@ -98,7 +95,11 @@ namespace _5week_Game_seach_Enemy
 
         public int[] MapSetting2()
         {
+            int Rock = 0;
+            int[] RockPos;
+            
             MapData=new int[100];
+            bool T = false;
             int RockCount = 0;
             Rock=random.Next(0, (GameLoop.mapsize_row*GameLoop.mapsize_col)/2/2);//돌 갯수 맵의 1/4 이하로 생성
             RockPos=new int[Rock];
@@ -115,15 +116,16 @@ namespace _5week_Game_seach_Enemy
                 }
             }
             Array.Sort(RockPos);
-            for (int i = 0; i<GameLoop.mapsize_row*GameLoop.mapsize_col; i++)
+            for(int i = 0; i<GameLoop.mapsize_row*GameLoop.mapsize_col; i++)
             {
                 if (i==GameLoop.playerPos)
                 {
                     MapData[i]=3;
                 }
-                else if (i==RockPos[RockCount])
+                else if (i==RockPos[RockCount]&&T==false)
                 {//돌 생성
-                    MapData[i]=1;
+                    MapData[i]=1;   
+                    T= true;
                 }
                 else if (i==GameLoop.enemyPos)
                 {
@@ -133,20 +135,21 @@ namespace _5week_Game_seach_Enemy
                 {
                     MapData[i]=0;
                 }
-
+                if (T==true)
+                {
+                    if (RockCount<RockPos.Length-1)
+                    {
+                        RockCount++;
+                        T= false;
+                    }
+                    T= false;
+                }
             }
 
 
             return MapData;
         }
 
-
-
-
-
-
     }
-
-
 
 }

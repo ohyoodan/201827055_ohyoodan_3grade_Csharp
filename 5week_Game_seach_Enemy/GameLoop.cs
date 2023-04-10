@@ -157,7 +157,8 @@ namespace _5week_Game_seach_Enemy
 
          void Init()
         {   setting = new MapSetting();
-            setting.PosSet();            
+            setting.MapSetting2();
+            
             map.MapCreat();
         }
 
