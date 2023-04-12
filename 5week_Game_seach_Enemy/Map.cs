@@ -45,16 +45,13 @@ namespace _5week_Game_seach_Enemy
                 Map_S[i].y =col;
             }            
 
-        }
-        public void Seach(ref int[] vis)
-        {
-            vis_chack= vis;
-        }
+        }        
+    
         
 
-        public void Map_out()
-        { 
-            
+        public void Map_out(int[] Map)
+        {
+            //Array.Sort(GameLoop.vis);
             for (int row = 0; row < GameLoop.mapsize_row; row++)
             {
                 
@@ -64,7 +61,7 @@ namespace _5week_Game_seach_Enemy
                     int index = row* GameLoop.mapsize_col + col;
                     if (GameLoop.Input == "1")
                     {
-                        Red = true;
+                        Red = true;                        
                     }else if (GameLoop.Input == "2")
                     {
                         Red = false;
@@ -74,28 +71,34 @@ namespace _5week_Game_seach_Enemy
                     {
                         Console.Write("\t\t\t\t\t\t");
                     }
-                    if (Map_S[index].index== GameLoop.playerPos)//플레이어 표시
+                    if (Map[index]==3)//플레이어 표시
                     {
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Yellow");
                         Map_S[index].PlayerOut();
                         Map_S[index].ColorReset();
                     }
-                    else if (Map_S[index].index== GameLoop.enemyPos)
+                    else if (Map[index]==2)//적
                     {
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Red");
                         Map_S[index].EnemyOut();
                         Map_S[index].ColorReset();
+                    }else if (Map[index]==1)//돌
+                    {
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Cyan");
+                        Map_S[index].RockOut();
+                        Map_S[index].ColorReset();
                     }
-                    //else if (GameLoop.Input=="1")
-                    //{
-                    //    Map_S[index].ColorReset();
-                    //    Map_S[index].ChangeColor("Red");
-                    //    Map_S[index].Out();//배열에 맞는 순으로 꺼내기
-                    //    Map_S[index].ColorReset();
-                    //}
-                    else// 아무 것 도 없는 칸
+                    else if (Red&&Map[index]==GameLoop.vis[index])
+                    {   
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Red");
+                        Map_S[index].Out();//배열에 맞는 순으로 꺼내기
+                        Map_S[index].ColorReset();
+                    }
+                    else if (Map[index]==0)
                     {
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Green");
@@ -130,15 +133,19 @@ namespace _5week_Game_seach_Enemy
         }
         public  void PlayerOut()
         {
-            Console.Write("●");
+            Console.Write("P ");
         }
         public void EnemyOut()
         {
-            Console.Write("★");
+            Console.Write("E ");
         } 
        public  string Outputxy()
         {
             return "현재 좌표는 X:"+x+" Y:"+y+"입니다";
+        }
+        public void RockOut()
+        {
+            Console.Write("■");
         }
 
         public void ChangeColor(string s)

@@ -31,15 +31,15 @@ namespace _5week_Game_seach_Enemy
 
 
 
-        Tree Tree;
+        Graph Graph;
         Thread thread;
         Map map = new Map();//Render용 맵
         
         MapSetting setting;
         Input_Key Input_Key = new Input_Key();
-        private int[] MapData = new int[100]; //실제 맵 데이터
+        private int[] MapData; //실제 맵 데이터
+        static public int[] vis;
         
-        int[] vis;
         bool startFirst = true;
         string s;
 
@@ -105,7 +105,7 @@ namespace _5week_Game_seach_Enemy
                 startFirst=false;
             }
             {
-                map.Map_out();
+                map.Map_out(MapData);
 
                 Console.WriteLine("====================================================================");
                 if (GameLoop.Input==null)
@@ -143,10 +143,9 @@ namespace _5week_Game_seach_Enemy
                 Console.WriteLine("Update");
                 if (GameLoop.Input=="1")
                 {   
-                    Tree=new Tree();
-                    //Tree.BFS(GameLoop.enemyPos);
-                    vis=Tree.Out();
-                    map.Seach(ref vis);
+                    Graph=new Graph(MapData);
+                   vis=Graph.ShortestPath(PlayerPos, EnemyPos);                    
+                   
                 }                
                 Console.ResetColor();
 
@@ -155,16 +154,15 @@ namespace _5week_Game_seach_Enemy
             
         }
 
-         void Init()
-        {   setting = new MapSetting();//맵 설정
-            setting.MapSetting2();//맵 배열
+         void Init()//구현 맵랜덤사이즈 설정
+        {   setting = new MapSetting();//맵 크기 랜덤
+            MapData=setting.MapSetting2();//맵 안에 돌과 플레이어, 적 설정
             
-            map.MapCreat();//그래픽 맵
+            map.MapCreat();//랜더링용 맵 제작
         }
 
-        void Init(int row, int col)
+        void Init(int row, int col)// 미 구현 맵사이즈 설정
         {   setting= new MapSetting(row,col);
-            setting.MapSetting2();
             
             map.MapCreat();
         }
@@ -173,7 +171,7 @@ namespace _5week_Game_seach_Enemy
         {                        
             Console.WriteLine("5초 후에 종료합니다.");
             Thread.Sleep(5000);            
-            Environment.Exit(0);
+            Environment.Exit(0);//종료
         }
 
 

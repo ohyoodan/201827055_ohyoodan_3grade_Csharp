@@ -40,3 +40,238 @@ https://gist.github.com/ihoneymon/652be052a0727ad59601
 A* (현실세계에서 의미있는 알고리즘 휴리스틱 함수를 이용해 최단 경로를 찾는다. 이 과정에서 선을 무시하고 일직선으로 한 번 계산하기에 3D게임에서는 의미 있을지는 모르나
  2D게임에서는 사용하기 힘들지도 모른다. 얌전하게 다익스트라 쓰자)(다익스트라를 개량한 거임)
 http://www.gisdeveloper.co.kr/?p=3897
+
+
+
+
+가장 위쪽 변의 타일 인덱스는 0에서 시작하여 (열의 개수 - 1)씩 증가합니다.
+가장 오른쪽 변의 타일 인덱스는 (열의 개수 - 1)부터 시작하여 (열의 개수 - 1)씩 증가합니다.
+가장 아래쪽 변의 타일 인덱스는 (행의 개수 - 1) * 열의 개수부터 시작하여 1씩 증가합니다.
+가장 왼쪽 변의 타일 인덱스는 열의 개수부터 시작하여 (열의 개수 - 1)씩 증가합니다.
+왼쪽 위 꼭짓점의 타일 인덱스는 0입니다.
+오른쪽 위 꼭짓점의 타일 인덱스는 (열의 개수 - 1)입니다.
+왼쪽 아래 꼭짓점의 타일 인덱스는 (행의 개수 - 1) * 열의 개수입니다.
+오른쪽 아래 꼭짓점의 타일 인덱스는 (행의 개수 * 열의 개수 - 1)입니다.
+
+
+
+
+
+===================================================================
+
+class GameLoop
+{
+    public const int mapsize_row=10;
+    public const int mapsize_col=10;
+
+    int[] Map;
+    int player_pos;
+    int enemy_pos;
+    Graph graph;
+
+    public GameLoop()
+    {
+        // 맵 생성
+        Map = new int[mapsize_row * mapsize_col];
+        Random rand = new Random();
+        for (int i = 0; i < Map.Length; i++)
+        {
+            Map[i] = (rand.Next(10) == 0) ? 1 : 0;
+        }
+
+        // 플레이어 위치 설정
+        player_pos = 0;
+        while (Map[player_pos] == 1)
+        {
+            player_pos = rand.Next(Map.Length);
+        }
+
+        // 적 위치 설정
+        enemy_pos = 0;
+        while (Map[enemy_pos] == 1 || enemy_pos == player_pos)
+        {
+            enemy_pos = rand.Next(Map.Length);
+        }
+
+        // 그래프 생성
+        graph = new Graph(Map);
+    }
+
+    public void Run()
+    {
+        while (true)
+        {
+            // 맵 출력
+            Console.Clear();
+            for (int i = 0; i < mapsize_row; i++)
+            {
+                for (int j = 0; j < mapsize_col; j++)
+                {
+                    int idx = i * mapsize_col + j;
+                    if (idx == player_pos)
+                    {
+                        Console.Write("P");
+                    }
+                    else if (idx == enemy_pos)
+                    {
+                        Console.Write("E");
+                    }
+                    else if (Map[idx] == 1)
+                    {
+                        Console.Write("#");
+                    }
+                    else
+                    {
+                        Console.Write(".");
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            // 이동 입력 받기
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            int nextPos = player_pos;
+            switch (keyInfo.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    if (player_pos >= mapsize_col && Map[player_pos - mapsize_col] != 1)
+                    {
+                        nextPos = player_pos - mapsize_col;
+                    }
+                    break;
+                case ConsoleKey.DownArrow:
+                    if (player_pos < Map.Length - mapsize_col && Map[player_pos + mapsize_col] != 1)
+                    {
+                        nextPos = player_pos + mapsize_col;
+                    }
+                    break;
+                case ConsoleKey.LeftArrow:
+                    if (player_pos % mapsize_col > 0 && Map[player_pos - 1] != 1)
+                    {
+                        nextPos = player_pos - 1;
+                    }
+                    break;
+                case ConsoleKey.RightArrow:
+                    if (player_pos % mapsize_col < mapsize_col - 1 && Map[player_pos + 1] != 1)
+                    {
+                        nextPos = player_pos + 1;
+                    }
+                    break;
+            }
+
+            if (nextPos != player_pos)
+            {
+                player_pos = nextPos;
+            }
+
+            // 적 이동
+            int[] dist = graph.ShortestPath(enemy_pos, player_pos);
+            int minDist = dist[enemy_pos];
+            foreach ((int v, int w) in graph.adjList[enemy_pos])
+            {
+                if (dist[v] < minDist)
+                {
+                    minDist = dist[v];
+                    enemy_pos = v;
+                }
+            }
+
+            if (player_pos == enemy_pos)
+            {
+                Console.WriteLine("Game Over!");
+                break
+                }
+-=======================================================================
+using System;
+using System.Collections.Generic;
+
+namespace _5week_Game_seach_Enemy
+{
+    internal class Graph
+    {
+        private int[] Map; // 맵 정보
+        private int Node; // 노드의 갯수
+        private List<List<(int, int)>> adjList; // 인접 리스트
+
+        public Graph(int[] Map)
+        {
+            this.Map = Map;
+            Node = Map.Length;
+            adjList = new List<List<(int, int)>>(Node);
+
+            for (int i = 0; i < Node; i++)
+            {
+                adjList.Add(new List<(int, int)>());
+            }
+
+            // 인접 리스트 생성
+            for (int i = 0; i < GameLoop.mapsize_row; i++)
+            {
+                for (int j = 0; j < GameLoop.mapsize_col; j++)
+                {
+                    int curr = i * GameLoop.mapsize_col + j;
+
+                    if (Map[curr] != 1)
+                    {
+                        // 현재 위치가 벽이 아니면 상하좌우를 확인하며 간선 추가
+                        if (i > 0 && Map[curr - GameLoop.mapsize_col] != 1)
+                        {
+                            AddEdge(curr, curr - GameLoop.mapsize_col, 1);
+                        }
+                        if (i < GameLoop.mapsize_row - 1 && Map[curr + GameLoop.mapsize_col] != 1)
+                        {
+                            AddEdge(curr, curr + GameLoop.mapsize_col, 1);
+                        }
+                        if (j > 0 && Map[curr - 1] != 1)
+                        {
+                            AddEdge(curr, curr - 1, 1);
+                        }
+                        if (j < GameLoop.mapsize_col - 1 && Map[curr + 1] != 1)
+                        {
+                            AddEdge(curr, curr + 1, 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void AddEdge(int u, int v, int w)
+        {
+            // u에서 v로 가는 가중치 w의 간선 추가
+            adjList[u].Add((v, w));
+            adjList[v].Add((u, w));
+        }
+
+        public int[] ShortestPath(int start, int end)
+        {
+            // 시작 노드에서부터의 최단 경로 배열
+            int[] dist = new int[Node];
+            bool[] visited = new bool[Node];
+            for (int i = 0; i < Node; i++)
+            {
+                dist[i] = int.MaxValue;
+            }
+            dist[start] = 0;
+
+            // 우선순위 큐에 (노드, 시작점으로부터의 거리) 삽입
+            PriorityQueue<(int, int), int> pq = new PriorityQueue<(int, int), int>();
+            pq.Enqueue((start, 0), 0);
+
+            while (pq.Count > 0)
+            {
+                // 가장 가까운 노드와 거리 추출
+                (int u, int d) = pq.Dequeue();
+
+                if (d > dist[u])
+                {
+                    // 이미 최단 경로를 구한 노드는 skip
+                    continue;
+                }
+
+                if (u == end)
+                {
+                    // 목적지에 도착한 경우
+                    break;
+                }
+
+                // u와 인접한 노드들의 최
