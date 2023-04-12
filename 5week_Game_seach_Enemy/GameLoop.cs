@@ -156,15 +156,16 @@ namespace _5week_Game_seach_Enemy
         }
 
          void Init()
-        {   setting = new MapSetting();
-            setting.MapSetting2();
+        {   setting = new MapSetting();//맵 설정
+            setting.MapSetting2();//맵 배열
             
-            map.MapCreat();
+            map.MapCreat();//그래픽 맵
         }
 
         void Init(int row, int col)
         {   setting= new MapSetting(row,col);
-            setting.PosSet();
+            setting.MapSetting2();
+            
             map.MapCreat();
         }
 

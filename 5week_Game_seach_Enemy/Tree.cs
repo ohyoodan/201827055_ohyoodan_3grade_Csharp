@@ -13,7 +13,7 @@ namespace _5week_Game_seach_Enemy
     {
         int[] Tree_ = new int[GameLoop.mapsize_row*GameLoop.mapsize_col];
 
-        int[] visited = new int[100];//이동한 위치를 저장하는 배열  나중에 게임 루프로 보내 줄 것
+        int[] visited = new int[int.MaxValue];//이동한 위치를 저장하는 배열  나중에 게임 루프로 보내 줄 것
         int visitedIdx = 0;
 
         public Tree()
@@ -43,20 +43,36 @@ namespace _5week_Game_seach_Enemy
 
 
         }
-
-        public bool IsMovable(int pos)
+        int[] seach()
         {
-            return pos>=0 && pos< GameLoop.mapsize_col*GameLoop.mapsize_row && Tree_[pos] != 1;
-            // 범위 내에 있고 벽이 아니면 이동 가능
-        }
 
-        public int[] Out()
-        {
-            return visited;
+            return Tree_;
         }
 
     }
 
+
+    public class Node
+    {
+        public int num;
+        Node(int num)
+        {
+            this.num = num;
+        }
+    }
+    public class Edge
+    {
+        public Node from;
+        public Node to;
+        public int weight; 
+
+        public Edge(Node from, Node to,int weight) { 
+        this.from = from;
+        this.to= to;
+        this.weight = weight;        
+        }
+
+    }
 
 
 

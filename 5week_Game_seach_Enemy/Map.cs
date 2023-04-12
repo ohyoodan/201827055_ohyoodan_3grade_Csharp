@@ -62,11 +62,14 @@ namespace _5week_Game_seach_Enemy
                 for(int col =0; col < GameLoop.mapsize_col; col++)
                 {
                     int index = row* GameLoop.mapsize_col + col;
+                    if (GameLoop.Input == "1")
+                    {
+                        Red = true;
+                    }else if (GameLoop.Input == "2")
+                    {
+                        Red = false;
+                    }
                     
-                    if (GameLoop.Input=="1")
-                    {if(index==vis_chack[index])//경로 표시
-                        Red=true;
-                     }
                     if (col==0)
                     {
                         Console.Write("\t\t\t\t\t\t");
@@ -85,13 +88,13 @@ namespace _5week_Game_seach_Enemy
                         Map_S[index].EnemyOut();
                         Map_S[index].ColorReset();
                     }
-                    else if (Red&&GameLoop.Input=="1")
-                    {
-                        Map_S[index].ColorReset();
-                        Map_S[index].ChangeColor("Red");
-                        Map_S[index].Out();//배열에 맞는 순으로 꺼내기
-                        Map_S[index].ColorReset();Red = false;
-                    }
+                    //else if (GameLoop.Input=="1")
+                    //{
+                    //    Map_S[index].ColorReset();
+                    //    Map_S[index].ChangeColor("Red");
+                    //    Map_S[index].Out();//배열에 맞는 순으로 꺼내기
+                    //    Map_S[index].ColorReset();
+                    //}
                     else// 아무 것 도 없는 칸
                     {
                         Map_S[index].ColorReset();
