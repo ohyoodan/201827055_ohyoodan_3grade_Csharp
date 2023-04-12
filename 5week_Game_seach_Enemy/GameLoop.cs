@@ -25,8 +25,6 @@ namespace _5week_Game_seach_Enemy
         static public bool isRunning = false;
 
         static public string Input;
-
-        static public Queue<int> Rock= new Queue<int>();//돌 맹 이
         //===================================================================
 
 
@@ -105,7 +103,15 @@ namespace _5week_Game_seach_Enemy
                 startFirst=false;
             }
             {
-                map.Map_out(MapData);
+                if (GameLoop.Input=="1") 
+                {
+                    map.Map_out(MapData, vis);
+                }
+                else
+                {
+                    map.Map_out(MapData);
+                }
+                
 
                 Console.WriteLine("====================================================================");
                 if (GameLoop.Input==null)

@@ -49,24 +49,23 @@ namespace _5week_Game_seach_Enemy
     
         
 
-        public void Map_out(int[] Map)
+        public void Map_out(int[] Map, int[] vis)
         {
-            //Array.Sort(GameLoop.vis);
+            int visCount = 0;
+            Array.Sort(vis);
+            foreach (int i in vis)
+            {                                                
+                    Map[i]=4;                                
+            }
+            Map[GameLoop.enemyPos]=2;
+            Map[GameLoop.playerPos]=3;
             for (int row = 0; row < GameLoop.mapsize_row; row++)
             {
                 
 
                 for(int col =0; col < GameLoop.mapsize_col; col++)
                 {
-                    int index = row* GameLoop.mapsize_col + col;
-                    if (GameLoop.Input == "1")
-                    {
-                        Red = true;                        
-                    }else if (GameLoop.Input == "2")
-                    {
-                        Red = false;
-                    }
-                    
+                    int index = row* GameLoop.mapsize_col + col;                                        
                     if (col==0)
                     {
                         Console.Write("\t\t\t\t\t\t");
@@ -91,12 +90,13 @@ namespace _5week_Game_seach_Enemy
                         Map_S[index].RockOut();
                         Map_S[index].ColorReset();
                     }
-                    else if (Red&&Map[index]==GameLoop.vis[index])
+                    else if (Map[index]==4)
                     {   
                         Map_S[index].ColorReset();
                         Map_S[index].ChangeColor("Red");
                         Map_S[index].Out();//배열에 맞는 순으로 꺼내기
                         Map_S[index].ColorReset();
+                        visCount++;
                     }
                     else if (Map[index]==0)
                     {
@@ -114,7 +114,56 @@ namespace _5week_Game_seach_Enemy
             }
             
         }
-        
+
+        public void Map_out(int[] Map)
+        {
+
+            for (int row = 0; row < GameLoop.mapsize_row; row++)
+            {
+
+
+                for (int col = 0; col < GameLoop.mapsize_col; col++)
+                {
+                    int index = row* GameLoop.mapsize_col + col;
+                                                            
+                    if (col==0)
+                    {
+                        Console.Write("\t\t\t\t\t\t");
+                    }
+                    if (Map[index]==3)//플레이어 표시
+                    {
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Yellow");
+                        Map_S[index].PlayerOut();
+                        Map_S[index].ColorReset();
+                    }
+                    else if (Map[index]==2)//적
+                    {
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Red");
+                        Map_S[index].EnemyOut();
+                        Map_S[index].ColorReset();
+                    }
+                    else if (Map[index]==1)//돌
+                    {
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Cyan");
+                        Map_S[index].RockOut();
+                        Map_S[index].ColorReset();
+                    }                    
+                    else if (Map[index]==0)
+                    {
+                        Map_S[index].ColorReset();
+                        Map_S[index].ChangeColor("Green");
+                        Map_S[index].Out();//배열에 맞는 순으로 꺼내기
+                        Map_S[index].ColorReset();
+                    }
+                }
+                Console.WriteLine();
+            }
+
+        }
+
     }
 
 

@@ -75,6 +75,7 @@ namespace _5week_Game_seach_Enemy
             // 시작 노드에서부터의 최단 경로 배열
             int[] dist = new int[Node];
             bool[] visited = new bool[Node];
+            int?[] prev = new int? [Node ];
             for (int i = 0; i < Node; i++)
             {
                 dist[i] = int.MaxValue;
@@ -104,17 +105,32 @@ namespace _5week_Game_seach_Enemy
 
                 // u와 인접한 노드들의 최단 거리 갱신
                 foreach ((int v, int w) in adjList[u])
-                {
+                {                    
                     int newDist = dist[u] + w;
                     if (newDist < dist[v])
                     {
                         dist[v] = newDist;
+                        prev[v]=u;
                         pq.Enqueue((v, newDist), newDist);
                     }
                 }
             }
+            if (prev[end]==null)
+            {//시작에서 도달 불가
+                return null;
+            }
 
-            return dist;
+
+            List<int> Path = new List<int>();
+            int curr = end;
+            while (curr !=start)
+            {
+                Path.Add(curr);
+                curr= prev[curr].Value;
+            }
+            Path.Add(start);Path.Reverse();
+
+            return Path.ToArray();//언박싱 일어날 것으로 추정
         }
 
         
