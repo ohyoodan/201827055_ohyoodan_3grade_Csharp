@@ -135,7 +135,12 @@ namespace _5week_Game_seach_Enemy
 
         
 
-        
+
+        int[] Out()
+        {
+            
+            return Map;            
+        }
 
     }
 
