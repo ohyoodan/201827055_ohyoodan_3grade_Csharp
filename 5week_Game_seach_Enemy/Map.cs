@@ -21,8 +21,8 @@ namespace _5week_Game_seach_Enemy
         Random randomsize = new Random();// 맵 사이즈 랜덤 3*3 4*4 5*5 6*6 7*7 8*8 9*9 10*10
 
        private block[] Map_S;// 자료 구조
-       int[] vis_chack=new int[4];
-        bool Red=false;
+       
+        
        
 
         public void MapsizeOut()

@@ -24,22 +24,22 @@ namespace _5week_Game_seach_Enemy
 
         static public bool isRunning = false;
 
-        static public string Input;
+        static public string InputData;
         //===================================================================
 
 
 
-        Graph Graph;
+        Graph Graph;//맵 데이터 그래프화
         Thread thread;
         Map map = new Map();//Render용 맵
         
         MapSetting setting;
         Input_Key Input_Key = new Input_Key();
         private int[] MapData; //실제 맵 데이터
-        static public int[] vis;
+        static public int[] vis;//최단거리
         
-        bool startFirst = true;
-        string s;
+        bool startFirst = true;// 처음 시작
+        string s;//임시 문자열
 
 
 
@@ -59,7 +59,7 @@ namespace _5week_Game_seach_Enemy
             
             }
 
-        static public void Stop()
+            public void Stop()
             {
             GameLoop.isRunning = false;
             }
@@ -92,7 +92,7 @@ namespace _5week_Game_seach_Enemy
 
                 Console.ResetColor();
 
-                GameLoop.Input=Input_Key.Input_KeyRead();
+                GameLoop.InputData=Input_Key.Input_KeyRead();
             }                        
             
         }
@@ -103,7 +103,7 @@ namespace _5week_Game_seach_Enemy
                 startFirst=false;
             }
             {
-                if (GameLoop.Input=="1") 
+                if (GameLoop.InputData=="1") 
                 {
                     map.Map_out(MapData, vis);
                 }
@@ -114,7 +114,7 @@ namespace _5week_Game_seach_Enemy
                 
 
                 Console.WriteLine("====================================================================");
-                if (GameLoop.Input==null)
+                if (GameLoop.InputData==null)
                 {
                     
                 }
@@ -138,7 +138,7 @@ namespace _5week_Game_seach_Enemy
             }
             else
             {
-                switch (GameLoop.Input)
+                switch (GameLoop.InputData)
                 {
                     case "1": s="적의 경로를 출력합니다."; break;
                     case "2": s="넘어가기"; break;
@@ -147,7 +147,7 @@ namespace _5week_Game_seach_Enemy
 
                 Console.ForegroundColor = ConsoleColor.Green;//색상
                 Console.WriteLine("Update");
-                if (GameLoop.Input=="1")
+                if (GameLoop.InputData=="1")
                 {   
                     Graph=new Graph(MapData);
                    vis=Graph.ShortestPath(PlayerPos, EnemyPos);                    
