@@ -117,6 +117,14 @@ namespace _5week_Game_seach_Enemy
 
         public void Map_out(int[] Map)
         {
+            for(int i=0; i<Map.Length; i++)
+            {
+                if (Map[i] == 4)
+                {
+                    Map[i] = 0;
+                }
+            }
+
 
             for (int row = 0; row < GameLoop.mapsize_row; row++)
             {
